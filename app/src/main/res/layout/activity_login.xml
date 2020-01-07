@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <FrameLayout
+    tools:context=".navigation.LoginActivity">
+<!--    NavHostFragment:导航容器
+        navGrph:存放导航的资源文件
+        defaultNavHost：和系统的返回按钮相关联(按返回键会走fragment栈)
+ -->
+    <fragment
+        android:id="@+id/hostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragmentContainer"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp"
-        android:textSize="26sp"
-        android:onClick="onTest"
-        android:text="测试"/>
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/destination"
+        app:defaultNavHost="true"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
