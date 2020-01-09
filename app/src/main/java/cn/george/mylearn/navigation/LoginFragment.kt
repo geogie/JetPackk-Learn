@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 
 import cn.george.mylearn.R
+import cn.george.mylearn.databinding.FragmentLoginBinding
+import cn.george.mylearn.databinding.LoginModel
 
 private const val ARG_PARAM1 = "name"
 
@@ -30,7 +33,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val binding:FragmentLoginBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
+        val loginModel = LoginModel("","",context!!)
+        binding.model = loginModel
+        binding.activity = activity
+        return binding.root
     }
 }
