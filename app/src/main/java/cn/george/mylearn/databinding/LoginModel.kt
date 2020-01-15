@@ -21,7 +21,6 @@ import com.google.gson.stream.JsonReader
 class LoginModel constructor(private val repository: UserRepository) : ViewModel() {
     val n = MutableLiveData("")
     val p = MutableLiveData("")
-
     val nameWatcher = object : SimpleWatcher() {
         override fun afterTextChanged(s: Editable?) {
             super.afterTextChanged(s)
@@ -39,16 +38,16 @@ class LoginModel constructor(private val repository: UserRepository) : ViewModel
         return repository.login(account, pwd)
     }
 
-    fun onFirstLaunch():String{
+    fun onFirstLaunch(): String {
         val context = BaseApplication.context
         context.assets.open("shoe.json").use {
             JsonReader(it.reader()).use {
-                val shoeType = object :TypeToken<List<Shoe>>(){}.type
-                val shoeList:List<Shoe> = Gson().fromJson(it,shoeType)
+                val shoeType = object : TypeToken<List<Shoe>>() {}.type
+                val shoeList: List<Shoe> = Gson().fromJson(it, shoeType)
                 val shoeDao = RepositoryProvider.provierShoeRepository(context)
                 shoeDao.insertShoes(shoeList)
-                for(i in 0..2){
-                    for (shoe in shoeList){
+                for (i in 0..2) {
+                    for (shoe in shoeList) {
                         shoe.id += shoeList.size
                     }
                     shoeDao.insertShoes(shoeList)
