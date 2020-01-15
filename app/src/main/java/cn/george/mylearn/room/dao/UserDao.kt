@@ -1,5 +1,6 @@
 package cn.george.mylearn.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import cn.george.mylearn.room.data.User
 
@@ -38,4 +39,7 @@ interface UserDao {
      */
     @Update
     fun updateUser(user: User)
+
+    @Query("SELECT * FROM user WHERE user_account = :account AND user_pwd = :pwd")
+    fun login(account: String, pwd: String): LiveData<User?>
 }

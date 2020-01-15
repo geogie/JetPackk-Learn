@@ -19,22 +19,22 @@ class RoomActivity : AppCompatActivity() {
     }
 
     fun onRoomTest(view: View) {
-        Thread(Runnable {
-            val user = User("hello", "123")
-            val result = AppDataBase.getInstance(this).userDao().insertUser(user)
-            Log.d(TAG, "插入-result:$result")
-        }).start()
+//        Thread(Runnable {
+//            val user = User("hello", "123")
+//            val result = AppDataBase.getInstance(this).userDao().insertUser(user)
+//            Log.d(TAG, "插入-result:$result")
+//        }).start()
     }
 
     fun onDelete(view: View) {
-        Thread(Runnable {
-            val userList = AppDataBase.getInstance(this).userDao().getAllUsers()
-            val id = userList[0].id
-            val user = User("hello", "123")
-            user.id = id
-            val result = AppDataBase.getInstance(this).userDao().deleteUser(user)
-            Log.d(TAG, "删除-result:$result")
-        }).start()
+//        Thread(Runnable {
+//            val userList = AppDataBase.getInstance(this).userDao().getAllUsers()
+//            val id = userList[0].id
+//            val user = User("hello", "123")
+//            user.id = id
+//            val result = AppDataBase.getInstance(this).userDao().deleteUser(user)
+//            Log.d(TAG, "删除-result:$result")
+//        }).start()
     }
 
     fun onQuery(view: View) {
@@ -45,15 +45,15 @@ class RoomActivity : AppCompatActivity() {
     }
 
     fun onUpdate(view: View) {
-        Thread(Runnable {
-            val userList = AppDataBase.getInstance(this).userDao().getAllUsers()
-            val id = userList[0].id
-            val user = User("hello", "1234")
-            Log.d(TAG,"准备-user:$user id:$id")
-            user.id=id
-            val result = AppDataBase.getInstance(this).userDao().updateUser(user)
-            Log.d(TAG, "修改-result:$result")
-        }).start()
+//        Thread(Runnable {
+//            val userList = AppDataBase.getInstance(this).userDao().getAllUsers()
+//            val id = userList[0].id
+//            val user = User("hello", "1234")
+//            Log.d(TAG,"准备-user:$user id:$id")
+//            user.id=id
+//            val result = AppDataBase.getInstance(this).userDao().updateUser(user)
+//            Log.d(TAG, "修改-result:$result")
+//        }).start()
 
     }
 }

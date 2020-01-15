@@ -1,6 +1,8 @@
 package cn.george.mylearn.room.data
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created By George
@@ -13,10 +15,8 @@ data class User(
     @ColumnInfo(name = "user_account") val account: String
     ,// 账号
     @ColumnInfo(name = "user_pwd") val pwd: String
-//    ,// 密码
-//    @ColumnInfo(name = "user_name") val name: String,
-//    @Embedded val address: Address,// 嵌套 地址
-//    @Ignore val state: Int // 状态只是临时的，所以不需要存储到数据库中
+    , @ColumnInfo(name = "user_name") val name: String
+    , @ColumnInfo(name = "user_url") val headImage: String
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

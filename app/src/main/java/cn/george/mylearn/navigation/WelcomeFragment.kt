@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import cn.george.mylearn.R
+import cn.george.mylearn.databinding.BaseConstant
+import cn.george.mylearn.utils.AppPrefsUtils
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
 /**
- * A simple [Fragment] subclass.
+ * 欢迎界面
  */
 class WelcomeFragment : Fragment() {
 
@@ -24,7 +26,8 @@ class WelcomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        tvNext.setOnClickListener {
+        super.onViewCreated(view, savedInstanceState)
+        btn_login.setOnClickListener {
             val navOption = navOptions {
                 anim {
                     enter = R.anim.common_slide_in_right
@@ -33,17 +36,17 @@ class WelcomeFragment : Fragment() {
                     popExit = R.anim.common_slide_out_right
                 }
             }
+
+            val name = AppPrefsUtils.getString(BaseConstant.SP_USER_NAME)
             val bundle = Bundle()
-            bundle.putString("name", "TeaOf")
-            // 利用id导航
+            bundle.putString(BaseConstant.ARGS_NAME, name)
             findNavController().navigate(R.id.login, bundle, navOption)
         }
 
-        tvRegister.setOnClickListener {
-            val action = WelcomeFragmentDirections.actionWelcomeToRegister().setEMAIL("email ok")
+        btn_register.setOnClickListener {
+            val action = WelcomeFragmentDirections.actionWelcomeToRegister()
+                .setEMAIL("george@Gamil.com")
             findNavController().navigate(action)
-
         }
-        super.onViewCreated(view, savedInstanceState)
     }
 }

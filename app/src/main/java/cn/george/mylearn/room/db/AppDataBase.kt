@@ -30,6 +30,8 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract fun userDao():UserDao
 
+    abstract fun shoeDao():ShoeDao
+
 //    abstract fun shoeDao():ShoeDao
 //
 //    abstract fun favouriteShoeDao():FavouriteShoeDao

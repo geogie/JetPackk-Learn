@@ -1,54 +1,59 @@
 package cn.george.mylearn.databinding
 
-import android.content.Context
-import android.content.Intent
 import android.text.Editable
-import android.text.TextUtils
-import android.widget.Toast
-import androidx.databinding.ObservableField
-import cn.george.mylearn.MainActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import cn.george.mylearn.common.BaseApplication
+import cn.george.mylearn.room.data.Shoe
+import cn.george.mylearn.room.data.User
+import cn.george.mylearn.room.db.RepositoryProvider
+import cn.george.mylearn.room.db.repository.UserRepository
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 
 /**
  * Created By George
  * Description:
+ * 和xml中对应，属性用 x.name; 方法用 x::name
  */
-class LoginModel constructor(name:String,pwd:String,context:Context){
-    val n = ObservableField<String>(name)
-    val p = ObservableField<String>(name)
-    val context:Context = context
-    val nameWatcher = object :SimpleWatcher(){
+class LoginModel constructor(private val repository: UserRepository) : ViewModel() {
+    val n = MutableLiveData("")
+    val p = MutableLiveData("")
+
+    val nameWatcher = object : SimpleWatcher() {
         override fun afterTextChanged(s: Editable?) {
             super.afterTextChanged(s)
-            n.set(s.toString())
+            n.value = s.toString()
         }
     }
 
-    val pwdWatcher = object :SimpleWatcher(){
-        override fun afterTextChanged(s: Editable?) {
-            super.afterTextChanged(s)
-            p.set(s.toString())
+    fun onPwdChanged(s: CharSequence, start: Int, before: Int, acount: Int) {
+        p.value = s.toString()
+    }
+
+    fun login(): LiveData<User?>? {
+        val pwd = p.value!!
+        val account = n.value!!
+        return repository.login(account, pwd)
+    }
+
+    fun onFirstLaunch():String{
+        val context = BaseApplication.context
+        context.assets.open("shoe.json").use {
+            JsonReader(it.reader()).use {
+                val shoeType = object :TypeToken<List<Shoe>>(){}.type
+                val shoeList:List<Shoe> = Gson().fromJson(it,shoeType)
+                val shoeDao = RepositoryProvider.provierShoeRepository(context)
+                shoeDao.insertShoes(shoeList)
+                for(i in 0..2){
+                    for (shoe in shoeList){
+                        shoe.id += shoeList.size
+                    }
+                    shoeDao.insertShoes(shoeList)
+                }
+            }
         }
-    }
-
-    fun onNameChanged(s:CharSequence){
-        n.set(s.toString())
-    }
-
-    fun onPwdChanaged(s: CharSequence, start: Int, before: Int, count: Int){
-        p.set(s.toString())
-    }
-
-    fun login(){
-        if (n.get().equals(BaseConstant.USER_NAME) && p.get().equals(BaseConstant.USER_PWD)){
-            Toast.makeText(context,"账号密码正确",Toast.LENGTH_SHORT).show()
-            val intent = Intent(context,MainActivity::class.java)
-            context.startActivity(intent)
-        }else{
-            Toast.makeText(context,"账号密码错误",Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    fun enableLogin():Boolean{
-        return !(TextUtils.isEmpty(n.get())|| TextUtils.isEmpty(p.get()))
     }
 }

@@ -1,29 +1,38 @@
 package cn.george.mylearn
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import cn.george.mylearn.liveData.LiveDataFragment
-import cn.george.mylearn.retrofit.Test
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    companion object{
+        private const val TAG="MainActivity-"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportFragmentManager    //
-            .beginTransaction()
-            .add(
-                R.id.fragmentContainer,
-                LiveDataFragment.getInstance()
-            )   // 此处的R.id.fragment_container是要盛放fragment的父容器
-            .commit()
 
-
+        val host:NavHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navController = host.navController
+        initBottomNavigationView(bNavView,navController)
     }
 
-    fun onTest(view: View) {
-        Test.test()
+    private fun initBottomNavigationView(bottomNavigationView:BottomNavigationView, navController:NavController){
+        bottomNavigationView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener{
+                _, destination, _ ->
+            when(destination.id){
+                R.id.meFragment-> Log.d(TAG,"我的")
+                else -> Log.d(TAG,"其他")
+            }
+        }
+
     }
 }
